@@ -42,4 +42,13 @@ def main():
 
         for i in range(0, num_images, 3):
             for j in range(3):
-               
+                if i + j < num_images:
+                    image = preprocess_image(uploaded_files[i + j])
+                    prediction = predict(image)
+
+                    # Display the uploaded image and prediction in a column
+                    with columns[j]:
+                        st.image(uploaded_files[i + j], caption=f"Prediction: {prediction}", use_column_width=True)
+
+if _name_ == "_main_":
+    main()
