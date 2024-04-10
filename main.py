@@ -4,7 +4,7 @@ import torch
 import torchvision.transforms as transforms
 
 # Load the model
-model_path = 'C:/Users/RAHUL/Downloads/model.pth'
+model_path = r'D:\Downloads\model.pkl'
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = torch.load(model_path, map_location=device)
 model.eval()
