@@ -1,11 +1,17 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 11 23:24:46 2024
+
+@author: ravik
+"""
 import streamlit as st
 from PIL import Image
 import torch
 import torchvision.transforms as transforms
 
-# Load the model (explicitly setting device to CPU)
-model_path = 'model.pkl'
-device = torch.device("cpu")  # Force CPU usage
+# Load the model
+model_path = r'C:\Users\ravik\Downloads\model.pth'
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = torch.load(model_path, map_location=device)
 model.eval()
 
@@ -13,12 +19,12 @@ class_names = ['MildDemented', 'ModerateDemented', 'NonDemented', 'VeryMildDemen
 
 def preprocess_image(image):
     preprocess = transforms.Compose([
-        transforms.Resize(size=256),
         transforms.CenterCrop(size=224),
         transforms.ToTensor(),
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
     img = Image.open(image).convert('RGB')
+    img = img.resize((256, 256))  # Resize the image
     img = preprocess(img).unsqueeze(0).to(device)
     return img
 
@@ -51,4 +57,5 @@ def main():
                         st.image(uploaded_files[i + j], caption=f"Prediction: {prediction}", use_column_width=True)
 
 if __name__ == "__main__":
+
     main()
